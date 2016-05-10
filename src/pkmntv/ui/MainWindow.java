@@ -132,7 +132,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        typeChartPanel.setPreferredSize(new java.awt.Dimension(24, 184));
         typeChartPanel.setLayout(new java.awt.GridLayout(4, 1));
 
         normalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Damaged normally by"));
@@ -189,7 +188,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
+                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -202,7 +201,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -242,6 +241,7 @@ public class MainWindow extends javax.swing.JFrame {
         type2Button.setText(sndType);
         type2Button.setBackground(TypeColorMatcher.TC_MAP.get(sndType));
         TypeEffect te = ig.typeMapGetter(fstType, sndType);
+        //Map<String, Double> map = te.getMap();
         typeChartInsert(normalPanel, te.getMap().entrySet().stream()
                 .filter(m -> m.getValue() == 1.0)
                 .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
@@ -254,7 +254,7 @@ public class MainWindow extends javax.swing.JFrame {
         typeChartInsert(resistantPanel, te.getMap().entrySet().stream()
                 .filter(m -> (m.getValue() < 1.0 && m.getValue() > 0.0))
                 .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
-        repaint();
+        typeChartPanel.repaint();
         }  
     }//GEN-LAST:event_jTextField1ActionPerformed
 
@@ -265,7 +265,6 @@ public class MainWindow extends javax.swing.JFrame {
             jb.setBackground(TypeColorMatcher.TC_MAP.get((String)k));
             panel.add(jb);
                 });
-        panel.revalidate();
     }
     
     
