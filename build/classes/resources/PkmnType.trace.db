@@ -1101,3 +1101,9 @@ SELECT MOVETYPE, EFFECTIVNESSFACTOR FROM TYPEEFFECT WHERE PKMNTYPE=? OR PKMNTYPE
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+05-08 22:41:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM PKMNTYPE  WHERE PKMNNAMELIKE ""%-%"""; SQL statement:
+SELECT * FROM PKMNTYPE  WHERE PKMNNAMELIKE "%-%" [42000-176]
+05-08 22:42:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM PKMNTYPE  WHERE PKMNNAMELIKE '%-%'"; SQL statement:
+SELECT * FROM PKMNTYPE  WHERE PKMNNAMELIKE '%-%' [42000-176]

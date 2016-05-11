@@ -6,9 +6,7 @@
 package pkmntv.logic;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  *
@@ -17,6 +15,8 @@ import java.util.stream.Stream;
 public class TypeEffect {
     
     private Map<String, Double> typeMap;
+    public final Double NORMAL_FACTOR = 1.0;
+    public final Double IMMUNE_FACTOR = 0.0;
     
     public TypeEffect(){
         typeMap = new HashMap();
@@ -24,28 +24,28 @@ public class TypeEffect {
     }
     
     private void fillTypeMap(){
-      typeMap.put("normal", 1.0); 
-      typeMap.put("fighting", 1.0);
-      typeMap.put("flying", 1.0);
-      typeMap.put("poison", 1.0);
-      typeMap.put("ground", 1.0);
-      typeMap.put("rock", 1.0);
-      typeMap.put("bug", 1.0);
-      typeMap.put("ghost", 1.0);
-      typeMap.put("steel", 1.0);
-      typeMap.put("fire", 1.0);
-      typeMap.put("water", 1.0);
-      typeMap.put("grass", 1.0);
-      typeMap.put("electric", 1.0);
-      typeMap.put("psychic", 1.0);
-      typeMap.put("ice", 1.0);
-      typeMap.put("dragon", 1.0);
-      typeMap.put("dark", 1.0);
-      typeMap.put("fairy", 1.0);
+      typeMap.put("normal",   NORMAL_FACTOR); 
+      typeMap.put("fighting", NORMAL_FACTOR);
+      typeMap.put("flying",   NORMAL_FACTOR);
+      typeMap.put("poison",   NORMAL_FACTOR);
+      typeMap.put("ground",   NORMAL_FACTOR);
+      typeMap.put("rock",     NORMAL_FACTOR);
+      typeMap.put("bug",      NORMAL_FACTOR);
+      typeMap.put("ghost",    NORMAL_FACTOR);
+      typeMap.put("steel",    NORMAL_FACTOR);
+      typeMap.put("fire",     NORMAL_FACTOR);
+      typeMap.put("water",    NORMAL_FACTOR);
+      typeMap.put("grass",    NORMAL_FACTOR);
+      typeMap.put("electric", NORMAL_FACTOR);
+      typeMap.put("psychic",  NORMAL_FACTOR);
+      typeMap.put("ice",      NORMAL_FACTOR);
+      typeMap.put("dragon",   NORMAL_FACTOR);
+      typeMap.put("dark",     NORMAL_FACTOR);
+      typeMap.put("fairy",    NORMAL_FACTOR);
     }
     
     public void resetTypeMap(){
-        typeMap.replaceAll((k,v) -> v = 1.0);
+        typeMap.replaceAll((k,v) -> v = NORMAL_FACTOR);
     }
     
     public void setValue(String type, Double value){
@@ -58,16 +58,5 @@ public class TypeEffect {
     
     private Double getValue(String type){
         return typeMap.get(type);
-    }
-    
-    public <K, V extends Comparable<? super V>> Map<String, Double> sortByValue()
-    {
-        Map<String, Double> result = new LinkedHashMap<>();
-        Stream<Map.Entry<String, Double>> st = typeMap.entrySet().stream();
-
-        st.sorted( Map.Entry.comparingByValue() )
-            .forEachOrdered( e -> result.put(e.getKey(), e.getValue()) );
-
-        return result;
     }
 }

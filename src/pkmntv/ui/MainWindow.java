@@ -5,10 +5,10 @@
  */
 package pkmntv.ui;
 
-import java.awt.Dimension;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Maps;
+import java.util.Arrays;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -240,20 +240,18 @@ public class MainWindow extends javax.swing.JFrame {
         type1Button.setBackground(TypeColorMatcher.TC_MAP.get(fstType));
         type2Button.setText(sndType);
         type2Button.setBackground(TypeColorMatcher.TC_MAP.get(sndType));
+        
         TypeEffect te = ig.typeMapGetter(fstType, sndType);
-        //Map<String, Double> map = te.getMap();
-        typeChartInsert(normalPanel, te.getMap().entrySet().stream()
-                .filter(m -> m.getValue() == 1.0)
-                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
-        typeChartInsert(weakPanel,  te.getMap().entrySet().stream()
-                .filter(m -> m.getValue() > 1.0)
-                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
-        typeChartInsert(immunePanel, te.getMap().entrySet().stream()
-                .filter(m -> m.getValue() == 0.0)
-                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
-        typeChartInsert(resistantPanel, te.getMap().entrySet().stream()
-                .filter(m -> (m.getValue() < 1.0 && m.getValue() > 0.0))
-                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
+        Map<String, Double> map = te.getMap();
+        typeChartInsert(normalPanel, Maps.filterValues(map, 
+                Predicates.equalTo(te.NORMAL_FACTOR)));
+        typeChartInsert(weakPanel, Maps.filterValues(map, 
+                Predicates.in(Arrays.asList(new Double[]{2.0, 4.0}))));
+        typeChartInsert(immunePanel, Maps.filterValues(map, 
+                Predicates.equalTo(te.IMMUNE_FACTOR)));
+        typeChartInsert(resistantPanel, Maps.filterValues(map, 
+                Predicates.in(Arrays.asList(new Double[]{0.5, 0.25}))));
+        
         typeChartPanel.repaint();
         }  
     }//GEN-LAST:event_jTextField1ActionPerformed
