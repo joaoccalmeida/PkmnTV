@@ -14,49 +14,45 @@ import java.util.Map;
  */
 public class TypeEffect {
     
-    private Map<String, Double> typeMap;
-    public final Double NORMAL_FACTOR = 1.0;
-    public final Double IMMUNE_FACTOR = 0.0;
-    
-    public TypeEffect(){
-        typeMap = new HashMap();
-        fillTypeMap();
+    public static final Double NORMAL_FACTOR = 1.0;
+    public static final Double IMMUNE_FACTOR = 0.0;
+    private static final Map<String, Double> TYPE_MAP;
+    static {
+        Map<String, Double> aMap = new HashMap<>();
+            aMap.put("normal",   NORMAL_FACTOR); 
+            aMap.put("fighting", NORMAL_FACTOR);
+            aMap.put("flying",   NORMAL_FACTOR);
+            aMap.put("poison",   NORMAL_FACTOR);
+            aMap.put("ground",   NORMAL_FACTOR);
+            aMap.put("rock",     NORMAL_FACTOR);
+            aMap.put("bug",      NORMAL_FACTOR);
+            aMap.put("ghost",    NORMAL_FACTOR);
+            aMap.put("steel",    NORMAL_FACTOR);
+            aMap.put("fire",     NORMAL_FACTOR);
+            aMap.put("water",    NORMAL_FACTOR);
+            aMap.put("grass",    NORMAL_FACTOR);
+            aMap.put("electric", NORMAL_FACTOR);
+            aMap.put("psychic",  NORMAL_FACTOR);
+            aMap.put("ice",      NORMAL_FACTOR);
+            aMap.put("dragon",   NORMAL_FACTOR);
+            aMap.put("dark",     NORMAL_FACTOR);
+            aMap.put("fairy",    NORMAL_FACTOR);
+            TYPE_MAP = aMap;
     }
     
-    private void fillTypeMap(){
-      typeMap.put("normal",   NORMAL_FACTOR); 
-      typeMap.put("fighting", NORMAL_FACTOR);
-      typeMap.put("flying",   NORMAL_FACTOR);
-      typeMap.put("poison",   NORMAL_FACTOR);
-      typeMap.put("ground",   NORMAL_FACTOR);
-      typeMap.put("rock",     NORMAL_FACTOR);
-      typeMap.put("bug",      NORMAL_FACTOR);
-      typeMap.put("ghost",    NORMAL_FACTOR);
-      typeMap.put("steel",    NORMAL_FACTOR);
-      typeMap.put("fire",     NORMAL_FACTOR);
-      typeMap.put("water",    NORMAL_FACTOR);
-      typeMap.put("grass",    NORMAL_FACTOR);
-      typeMap.put("electric", NORMAL_FACTOR);
-      typeMap.put("psychic",  NORMAL_FACTOR);
-      typeMap.put("ice",      NORMAL_FACTOR);
-      typeMap.put("dragon",   NORMAL_FACTOR);
-      typeMap.put("dark",     NORMAL_FACTOR);
-      typeMap.put("fairy",    NORMAL_FACTOR);
+    public static void resetTypeMap(){
+        TYPE_MAP.replaceAll((k,v) -> v = NORMAL_FACTOR);
     }
     
-    public void resetTypeMap(){
-        typeMap.replaceAll((k,v) -> v = NORMAL_FACTOR);
+    public static void setValue(String type, Double value){
+        TYPE_MAP.replace(type, getValue(type)*value);
     }
     
-    public void setValue(String type, Double value){
-        typeMap.replace(type, this.getValue(type)*value);
+    public static Map getMap(){
+        return TYPE_MAP;
     }
     
-    public Map<String, Double> getMap(){
-        return typeMap;
-    }
-    
-    private Double getValue(String type){
-        return typeMap.get(type);
+    private static Double getValue(String type){
+        return TYPE_MAP.get(type);
     }
 }

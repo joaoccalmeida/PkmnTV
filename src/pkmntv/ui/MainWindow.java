@@ -21,7 +21,7 @@ import pkmntv.logic.TypeEffect;
  * @author João
  */
 public class MainWindow extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form MainWindow
      */
@@ -67,6 +67,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         idNameLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        idNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         idNameLabel.setText(" <Name>");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -92,32 +93,31 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(idNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(type1Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 59, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(idNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(idNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(idNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(type1Button, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
 
         jTextField1.setText("Enter Pokemon name");
@@ -188,7 +188,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
+                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -201,7 +201,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -223,40 +223,53 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1FocusGained
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        clearTypeChart();
+        
+        Pokemon pkmn = InfoGetter.getPkmnInfo(jTextField1.getText());
+        if(pkmn == null)
+            JOptionPane.showMessageDialog(this, "The Pokemon doesn´t exist.\nPlease try again.", "Pokemon not found", JOptionPane.ERROR_MESSAGE);
+        else{
+            String fstType = pkmn.getFirstType();
+            String sndType = pkmn.getSecondType();
+            idNameLabel.setText(pkmn.getName());
+
+            alterTypeButtons(pkmn.getFirstType(), pkmn.getSecondType());
+
+            if(!InfoGetter.getPkmnTypeEffect(fstType, sndType))
+                JOptionPane.showMessageDialog(this, "Couldn't retrive the Pokemon type effectivness.\nPlease try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            else{
+                Map<String, Double> typeMap = TypeEffect.getMap();
+                insertTypeChartButtons(normalPanel, Maps.filterValues(typeMap, 
+                    Predicates.equalTo(TypeEffect.NORMAL_FACTOR)));
+                insertTypeChartButtons(weakPanel, Maps.filterValues(typeMap, 
+                        Predicates.in(Arrays.asList(new Double[]{2.0, 4.0}))));
+                insertTypeChartButtons(immunePanel, Maps.filterValues(typeMap, 
+                        Predicates.equalTo(TypeEffect.IMMUNE_FACTOR)));
+                insertTypeChartButtons(resistantPanel, Maps.filterValues(typeMap, 
+                        Predicates.in(Arrays.asList(new Double[]{0.5, 0.25}))));
+
+                typeChartPanel.repaint();
+            }
+        }  
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void alterTypeButtons(String type1, String type2){
+        type1Button.setText(type1);
+        type1Button.setBackground(TypeColorMatcher.TC_MAP.get(type1));
+        type2Button.setText(type2);
+        type2Button.setBackground(TypeColorMatcher.TC_MAP.get(type2));
+    }
+    
+    private void clearTypeChart(){
         normalPanel.removeAll();
         weakPanel.removeAll();
         immunePanel.removeAll();
         resistantPanel.removeAll();
         
-        InfoGetter ig  = new InfoGetter(jTextField1.getText());
-        Pokemon pkmn = ig.PkmnInfoGetter();
-        if(pkmn == null)
-            JOptionPane.showMessageDialog(this, "The Pokemon doesn´t exist.\nPlease try again.", "Pokemon not found", JOptionPane.ERROR_MESSAGE);
-        else{
-           String fstType = pkmn.getFirstType();
-        String sndType = pkmn.getSecondType();
-        idNameLabel.setText(pkmn.getName());
-        type1Button.setText(fstType);
-        type1Button.setBackground(TypeColorMatcher.TC_MAP.get(fstType));
-        type2Button.setText(sndType);
-        type2Button.setBackground(TypeColorMatcher.TC_MAP.get(sndType));
-        
-        TypeEffect te = ig.typeMapGetter(fstType, sndType);
-        Map<String, Double> map = te.getMap();
-        typeChartInsert(normalPanel, Maps.filterValues(map, 
-                Predicates.equalTo(te.NORMAL_FACTOR)));
-        typeChartInsert(weakPanel, Maps.filterValues(map, 
-                Predicates.in(Arrays.asList(new Double[]{2.0, 4.0}))));
-        typeChartInsert(immunePanel, Maps.filterValues(map, 
-                Predicates.equalTo(te.IMMUNE_FACTOR)));
-        typeChartInsert(resistantPanel, Maps.filterValues(map, 
-                Predicates.in(Arrays.asList(new Double[]{0.5, 0.25}))));
-        
-        typeChartPanel.repaint();
-        }  
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void typeChartInsert(JPanel panel, Map map){
+        TypeEffect.resetTypeMap();
+    }
+    
+    private void insertTypeChartButtons(JPanel panel, Map map){
         map.forEach((k,v)-> {
             JButton jb = new JButton(k+": "+v+"x");
             jb.setVisible(true);
@@ -295,10 +308,8 @@ public class MainWindow extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainWindow().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainWindow().setVisible(true);
         });
     }
 

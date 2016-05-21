@@ -17,14 +17,14 @@ import pkmntv.logic.TypeEffect;
  */
 public class InfoGetter {
     
-    private final String name;
-    private Connection conn;
-    
+    //private final String name;
+    private static Connection conn;
+    /*
     public InfoGetter(String name){
         this.name = name;
-    }
+    }*/
     
-    public Pokemon PkmnInfoGetter(){
+    public static Pokemon getPkmnInfo(String name){
         Pokemon pkmn = null;
         try {
             Class.forName("org.h2.Driver");
@@ -55,8 +55,7 @@ public class InfoGetter {
         return pkmn;
     }
     
-    public TypeEffect typeMapGetter(String type1, String type2){
-        TypeEffect te = null;
+    public static boolean getPkmnTypeEffect(String type1, String type2){
         try {
             Class.forName("org.h2.Driver");
             conn = DriverManager.
@@ -67,9 +66,8 @@ public class InfoGetter {
             prepSt.setString(2, type2);
             ResultSet rs = prepSt.executeQuery();
             
-            te = new TypeEffect();
             while(rs.next()){
-                te.setValue(rs.getString(1), rs.getDouble(2));
+                TypeEffect.setValue(rs.getString(1), rs.getDouble(2));
             }
             
             prepSt.close();
@@ -78,7 +76,8 @@ public class InfoGetter {
             
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(InfoGetter.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        return te;
+        return true;
     }  
 }
