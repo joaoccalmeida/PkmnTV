@@ -17,37 +17,27 @@ import pkmntv.logic.TypeEffect;
  */
 public class InfoGetter {
     
-    //private final String name;
-    private static Connection conn;
-    /*
-    public InfoGetter(String name){
-        this.name = name;
-    }*/
-    
     public static Pokemon getPkmnInfo(String name){
         Pokemon pkmn = null;
         try {
             Class.forName("org.h2.Driver");
-            conn = DriverManager.
+            Connection conn = DriverManager.
                     getConnection("jdbc:h2:file:./src/resources/PkmnType", "sa", "");
             
-            PreparedStatement prepSt = conn.prepareStatement("SELECT PKMNTYPE FROM PKMNTYPE WHERE PKMNNAME=?");
-            prepSt.setString(1, name);
-            ResultSet rs = prepSt.executeQuery();
-            
-            if(!rs.next()){
-                prepSt.close();
-                rs.close();
-                conn.close();
-                return null;
+            ResultSet rs;
+            try (PreparedStatement prepSt = conn.prepareStatement("SELECT PKMNTYPE FROM PKMNTYPE WHERE PKMNNAME=?")) {
+                prepSt.setString(1, name);
+                rs = prepSt.executeQuery();
+                if(!rs.next()){
+                    closeResources(rs, conn);
+                    return null;
+                }   
+                
+                String type1 = rs.getString(1);
+                String type2 = rs.next() ? rs.getString(1) : null;
+                pkmn = new Pokemon(name, type1, type2);
             }
-            String type1 = rs.getString(1);
-            String type2 = rs.next() ? rs.getString(1) : null; 
-            pkmn = new Pokemon(name, type1, type2);
-            
-            prepSt.close();
-            rs.close();
-            conn.close();
+            closeResources(rs, conn);
             
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(InfoGetter.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,26 +48,29 @@ public class InfoGetter {
     public static boolean getPkmnTypeEffect(String type1, String type2){
         try {
             Class.forName("org.h2.Driver");
-            conn = DriverManager.
+            Connection conn = DriverManager.
                     getConnection("jdbc:h2:file:./src/resources/PkmnType", "sa", "");
             
-            PreparedStatement prepSt = conn.prepareStatement("SELECT MOVETYPE, EFFECTIVNESSFACTOR FROM TYPEEFFECT WHERE PKMNTYPE=? OR PKMNTYPE=?");
-            prepSt.setString(1, type1);
-            prepSt.setString(2, type2);
-            ResultSet rs = prepSt.executeQuery();
-            
-            while(rs.next()){
-                TypeEffect.setValue(rs.getString(1), rs.getDouble(2));
+            ResultSet rs;
+            try (PreparedStatement prepSt = conn.prepareStatement("SELECT MOVETYPE, EFFECTIVNESSFACTOR FROM TYPEEFFECT WHERE PKMNTYPE=? OR PKMNTYPE=?")) {
+                prepSt.setString(1, type1);
+                prepSt.setString(2, type2);
+                rs = prepSt.executeQuery();
+                while(rs.next()){
+                    TypeEffect.setValue(rs.getString(1), rs.getDouble(2));
+                }
             }
-            
-            prepSt.close();
-            rs.close();
-            conn.close();
+            closeResources(rs, conn);
+            return true;
             
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(InfoGetter.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        return true;
-    }  
+    } 
+    
+    private static void closeResources(ResultSet rs, Connection conn) throws SQLException{
+        rs.close();
+        conn.close();
+    }
 }

@@ -5,9 +5,7 @@
  */
 package pkmntv.ui;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
-import java.util.Arrays;
+import java.awt.Dimension;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -117,7 +115,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTextField1.setText("Enter Pokemon name");
@@ -132,6 +130,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        typeChartPanel.setPreferredSize(new java.awt.Dimension(440, 414));
         typeChartPanel.setLayout(new java.awt.GridLayout(4, 1));
 
         normalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Damaged normally by"));
@@ -144,7 +143,7 @@ public class MainWindow extends javax.swing.JFrame {
         typeChartPanel.add(weakPanel);
 
         immunePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Immune to"));
-        immunePanel.setLayout(new java.awt.GridLayout(2, 10));
+        immunePanel.setLayout(new java.awt.GridLayout(2, 2));
         typeChartPanel.add(immunePanel);
 
         resistantPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Resistant to"));
@@ -188,7 +187,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
+                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -201,7 +200,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -227,7 +226,9 @@ public class MainWindow extends javax.swing.JFrame {
         
         Pokemon pkmn = InfoGetter.getPkmnInfo(jTextField1.getText());
         if(pkmn == null)
-            JOptionPane.showMessageDialog(this, "The Pokemon doesn´t exist.\nPlease try again.", "Pokemon not found", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                    "The Pokemon doesn´t exist.\nPlease try again.", 
+                    "Pokemon not found", JOptionPane.ERROR_MESSAGE);
         else{
             String fstType = pkmn.getFirstType();
             String sndType = pkmn.getSecondType();
@@ -236,18 +237,17 @@ public class MainWindow extends javax.swing.JFrame {
             alterTypeButtons(pkmn.getFirstType(), pkmn.getSecondType());
 
             if(!InfoGetter.getPkmnTypeEffect(fstType, sndType))
-                JOptionPane.showMessageDialog(this, "Couldn't retrive the Pokemon type effectivness.\nPlease try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                        "Couldn't retrive the Pokemon type effectivness.\n"
+                                + "Please try again.", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
             else{
-                Map<String, Double> typeMap = TypeEffect.getMap();
-                insertTypeChartButtons(normalPanel, Maps.filterValues(typeMap, 
-                    Predicates.equalTo(TypeEffect.NORMAL_FACTOR)));
-                insertTypeChartButtons(weakPanel, Maps.filterValues(typeMap, 
-                        Predicates.in(Arrays.asList(new Double[]{2.0, 4.0}))));
-                insertTypeChartButtons(immunePanel, Maps.filterValues(typeMap, 
-                        Predicates.equalTo(TypeEffect.IMMUNE_FACTOR)));
-                insertTypeChartButtons(resistantPanel, Maps.filterValues(typeMap, 
-                        Predicates.in(Arrays.asList(new Double[]{0.5, 0.25}))));
-
+                insertTypeChartButtons(normalPanel, TypeEffect.getNormalEffectMap());
+                /*
+                insertTypeChartButtons(weakPanel, TypeEffect.getWeakEffectMap());
+                insertTypeChartButtons(immunePanel, TypeEffect.getImmuneEffectMap());
+                insertTypeChartButtons(resistantPanel, TypeEffect.getResistantEffectMap());
+                */
                 typeChartPanel.repaint();
             }
         }  

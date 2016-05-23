@@ -5,7 +5,11 @@
  */
 package pkmntv.logic;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,8 +18,10 @@ import java.util.Map;
  */
 public class TypeEffect {
     
-    public static final Double NORMAL_FACTOR = 1.0;
-    public static final Double IMMUNE_FACTOR = 0.0;
+    private static final Double NORMAL_FACTOR = 1.0;
+    private static final Double IMMUNE_FACTOR = 0.0;
+    private static final List<Double> WEAK_FACTORS = ImmutableList.of(2.0, 4.0);
+    private static final List<Double> RESISTANCE_FACTORS = ImmutableList.of(0.5, 0.25);
     private static final Map<String, Double> TYPE_MAP;
     static {
         Map<String, Double> aMap = new HashMap<>();
@@ -48,11 +54,23 @@ public class TypeEffect {
         TYPE_MAP.replace(type, getValue(type)*value);
     }
     
-    public static Map getMap(){
-        return TYPE_MAP;
-    }
-    
     private static Double getValue(String type){
         return TYPE_MAP.get(type);
+    }
+    
+    public static Map getNormalEffectMap(){
+        return Maps.filterValues(TYPE_MAP, Predicates.equalTo(NORMAL_FACTOR));
+    }
+    
+    public static Map getWeakEffectMap(){
+        return Maps.filterValues(TYPE_MAP, Predicates.in(WEAK_FACTORS));
+    }
+    
+    public static Map getImmuneEffectMap(){
+        return Maps.filterValues(TYPE_MAP, Predicates.equalTo(IMMUNE_FACTOR));
+    }
+    
+    public static Map getResistantEffectMap(){
+        return Maps.filterValues(TYPE_MAP, Predicates.in(RESISTANCE_FACTORS));
     }
 }

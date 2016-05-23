@@ -5,9 +5,6 @@
  */
 package pkmntv.logic;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  *
  * @author João
@@ -15,8 +12,8 @@ import java.util.List;
 public class Pokemon {
     
     //private int id;
-    private String name;
-    private String type1, type2;
+    private final String name;
+    private final String type1, type2;
     
     public Pokemon(String name, String type1, String type2){
         this.name = name;
