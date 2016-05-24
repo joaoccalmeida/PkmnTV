@@ -5,7 +5,6 @@
  */
 package pkmntv.ui;
 
-import java.awt.Dimension;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -20,11 +19,14 @@ import pkmntv.logic.TypeEffect;
  */
 public class MainWindow extends javax.swing.JFrame {
     
+    private final InfoGetter ig;
+    private boolean isFirstQuery = true;
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+        ig = new InfoGetter();
         jMenu3.requestFocus();
     }
 
@@ -222,9 +224,13 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1FocusGained
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        clearTypeChart();
+        // For the first query is not necessary to clear the type panels.
+        if(isFirstQuery)
+            isFirstQuery = false;
+        else
+            clearTypeChart();
         
-        Pokemon pkmn = InfoGetter.getPkmnInfo(jTextField1.getText());
+        Pokemon pkmn = ig.getPkmnInfo(jTextField1.getText().toLowerCase());
         if(pkmn == null)
             JOptionPane.showMessageDialog(this, 
                     "The Pokemon doesn´t exist.\nPlease try again.", 
@@ -232,23 +238,23 @@ public class MainWindow extends javax.swing.JFrame {
         else{
             String fstType = pkmn.getFirstType();
             String sndType = pkmn.getSecondType();
-            idNameLabel.setText(pkmn.getName());
 
-            alterTypeButtons(pkmn.getFirstType(), pkmn.getSecondType());
-
-            if(!InfoGetter.getPkmnTypeEffect(fstType, sndType))
+            if(!ig.getPkmnTypeEffect(fstType, sndType))
                 JOptionPane.showMessageDialog(this, 
-                        "Couldn't retrive the Pokemon type effectivness.\n"
+                        "Couldn't retrieve the Pokemon type effectivness.\n"
                                 + "Please try again.", 
                         "Error", JOptionPane.ERROR_MESSAGE);
             else{
+                idNameLabel.setText(pkmn.getName());
+                alterTypeButtons(pkmn.getFirstType(), pkmn.getSecondType());
+            
                 insertTypeChartButtons(normalPanel, TypeEffect.getNormalEffectMap());
-                /*
                 insertTypeChartButtons(weakPanel, TypeEffect.getWeakEffectMap());
                 insertTypeChartButtons(immunePanel, TypeEffect.getImmuneEffectMap());
                 insertTypeChartButtons(resistantPanel, TypeEffect.getResistantEffectMap());
-                */
+                
                 typeChartPanel.repaint();
+                this.pack();
             }
         }  
     }//GEN-LAST:event_jTextField1ActionPerformed

@@ -8,6 +8,7 @@ package pkmntv.dbconn;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.h2.jdbcx.JdbcConnectionPool;
 import pkmntv.logic.Pokemon;
 import pkmntv.logic.TypeEffect;
 
@@ -17,13 +18,16 @@ import pkmntv.logic.TypeEffect;
  */
 public class InfoGetter {
     
-    public static Pokemon getPkmnInfo(String name){
+    private final JdbcConnectionPool cp;
+    
+    public InfoGetter(){
+        cp = JdbcConnectionPool.create("jdbc:h2:file:./src/resources/PkmnType", "sa", "");
+    }
+    
+    public Pokemon getPkmnInfo(String name){
         Pokemon pkmn = null;
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.
-                    getConnection("jdbc:h2:file:./src/resources/PkmnType", "sa", "");
-            
+            Connection conn = cp.getConnection();
             ResultSet rs;
             try (PreparedStatement prepSt = conn.prepareStatement("SELECT PKMNTYPE FROM PKMNTYPE WHERE PKMNNAME=?")) {
                 prepSt.setString(1, name);
@@ -39,18 +43,15 @@ public class InfoGetter {
             }
             closeResources(rs, conn);
             
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(InfoGetter.class.getName()).log(Level.SEVERE, null, ex);
         }
         return pkmn;
     }
     
-    public static boolean getPkmnTypeEffect(String type1, String type2){
+    public boolean getPkmnTypeEffect(String type1, String type2){
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.
-                    getConnection("jdbc:h2:file:./src/resources/PkmnType", "sa", "");
-            
+            Connection conn = cp.getConnection();
             ResultSet rs;
             try (PreparedStatement prepSt = conn.prepareStatement("SELECT MOVETYPE, EFFECTIVNESSFACTOR FROM TYPEEFFECT WHERE PKMNTYPE=? OR PKMNTYPE=?")) {
                 prepSt.setString(1, type1);
@@ -63,7 +64,7 @@ public class InfoGetter {
             closeResources(rs, conn);
             return true;
             
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(InfoGetter.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }

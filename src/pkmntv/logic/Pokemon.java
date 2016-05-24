@@ -11,7 +11,6 @@ package pkmntv.logic;
  */
 public class Pokemon {
     
-    //private int id;
     private final String name;
     private final String type1, type2;
     
@@ -30,6 +29,6 @@ public class Pokemon {
     }
     
     public String getName(){
-        return name;
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 }
