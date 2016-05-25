@@ -21,7 +21,7 @@ public class InfoGetter {
     private final JdbcConnectionPool cp;
     
     public InfoGetter(){
-        cp = JdbcConnectionPool.create("jdbc:h2:file:./src/resources/PkmnType", "sa", "");
+        cp = JdbcConnectionPool.create("jdbc:h2:file:./src/resources/database/PkmnType", "sa", "");
     }
     
     public Pokemon getPkmnInfo(String name){

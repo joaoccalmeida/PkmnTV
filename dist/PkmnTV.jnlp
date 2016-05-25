@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="PkmnTV.jar" size="50595" download="eager" />
+    <jar href="PkmnTV.jar" size="103212350" download="eager" />
     <jar href="lib/AbsoluteLayout.jar" size="2903" download="eager" />
     <jar href="lib/beansbinding-1.2.1.jar" size="631289" download="eager" />
     <jar href="lib/guava-18.0.jar" size="2256213" download="eager" />

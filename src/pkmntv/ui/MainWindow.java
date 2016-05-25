@@ -5,7 +5,9 @@
  */
 package pkmntv.ui;
 
+import java.net.URL;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,6 +23,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private final InfoGetter ig;
     private boolean isFirstQuery = true;
+    private boolean showPkmnImage = true;
     /**
      * Creates new form MainWindow
      */
@@ -43,20 +46,21 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jPanel2 = new javax.swing.JPanel();
         idNameLabel = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
         type1Button = new javax.swing.JButton();
         type2Button = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        imgLabel = new javax.swing.JLabel();
+        pkmnTextField = new javax.swing.JTextField();
         typeChartPanel = new javax.swing.JPanel();
         normalPanel = new javax.swing.JPanel();
         weakPanel = new javax.swing.JPanel();
         immunePanel = new javax.swing.JPanel();
         resistantPanel = new javax.swing.JPanel();
+        pkmnSearchButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        showImgMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -70,41 +74,33 @@ public class MainWindow extends javax.swing.JFrame {
         idNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         idNameLabel.setText(" <Name>");
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 192, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 192, Short.MAX_VALUE)
-        );
-
         type1Button.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         type1Button.setText("Type1");
 
         type2Button.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         type2Button.setText("Type2");
 
+        imgLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imgLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(type1Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(imgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(idNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(idNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(type1Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,20 +111,20 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(type1Button, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(imgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTextField1.setText("Enter Pokemon name");
-        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+        pkmnTextField.setText("Enter Pokemon name");
+        pkmnTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField1FocusGained(evt);
+                pkmnTextFieldFocusGained(evt);
             }
         });
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        pkmnTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                pkmnTextFieldActionPerformed(evt);
             }
         });
 
@@ -152,6 +148,13 @@ public class MainWindow extends javax.swing.JFrame {
         resistantPanel.setLayout(new java.awt.GridLayout(2, 10));
         typeChartPanel.add(resistantPanel);
 
+        pkmnSearchButton.setText("Search");
+        pkmnSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pkmnSearchButtonActionPerformed(evt);
+            }
+        });
+
         jMenu3.setText("File");
 
         jMenuItem1.setText("Close");
@@ -166,14 +169,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenu4.setText("Edit");
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Get Pokemon image");
-        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jCheckBoxMenuItem1);
+        showImgMenuItem.setSelected(true);
+        showImgMenuItem.setText("Get Pokemon image");
+        jMenu4.add(showImgMenuItem);
 
         jMenuBar1.add(jMenu4);
 
@@ -189,20 +187,24 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pkmnTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pkmnSearchButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pkmnTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pkmnSearchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -210,27 +212,31 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
-        jTextField1.setText("");
-    }//GEN-LAST:event_jTextField1FocusGained
+    private void pkmnTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pkmnTextFieldFocusGained
+        pkmnTextField.setText("");
+    }//GEN-LAST:event_pkmnTextFieldFocusGained
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void pkmnTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pkmnTextFieldActionPerformed
+        showPkmnInfo(pkmnTextField.getText().toLowerCase());
+    }//GEN-LAST:event_pkmnTextFieldActionPerformed
+
+    private void pkmnSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pkmnSearchButtonActionPerformed
+        showPkmnInfo(pkmnTextField.getText().toLowerCase());
+    }//GEN-LAST:event_pkmnSearchButtonActionPerformed
+
+    private void showPkmnInfo(String name){
         // For the first query is not necessary to clear the type panels.
         if(isFirstQuery)
             isFirstQuery = false;
         else
             clearTypeChart();
         
-        Pokemon pkmn = ig.getPkmnInfo(jTextField1.getText().toLowerCase());
+        Pokemon pkmn = ig.getPkmnInfo(name);
         if(pkmn == null)
             JOptionPane.showMessageDialog(this, 
                     "The Pokemon doesn´t exist.\nPlease try again.", 
@@ -241,10 +247,13 @@ public class MainWindow extends javax.swing.JFrame {
 
             if(!ig.getPkmnTypeEffect(fstType, sndType))
                 JOptionPane.showMessageDialog(this, 
-                        "Couldn't retrieve the Pokemon type effectivness.\n"
+                        "Could not get the Pokemon type effectivness.\n"
                                 + "Please try again.", 
                         "Error", JOptionPane.ERROR_MESSAGE);
             else{
+                if(showImgMenuItem.isSelected()){
+                    displayPkmnImage(name);
+                }
                 idNameLabel.setText(pkmn.getName());
                 alterTypeButtons(pkmn.getFirstType(), pkmn.getSecondType());
             
@@ -257,8 +266,19 @@ public class MainWindow extends javax.swing.JFrame {
                 this.pack();
             }
         }  
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
+    }
+    
+    private void displayPkmnImage(String name){
+        URL url = getClass().getClassLoader().getResource("resources/sprites/" + name + ".gif");
+        if(url == null)
+            JOptionPane.showMessageDialog(this, 
+                        "Could not get the Pokemon sprite.\n"
+                                + "Please try again.", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+        else
+            imgLabel.setIcon(new ImageIcon(url));
+    }
+    
     private void alterTypeButtons(String type1, String type2){
         type1Button.setText(type1);
         type1Button.setBackground(TypeColorMatcher.TC_MAP.get(type1));
@@ -321,8 +341,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel idNameLabel;
+    private javax.swing.JLabel imgLabel;
     private javax.swing.JPanel immunePanel;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -330,10 +350,11 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel normalPanel;
+    private javax.swing.JButton pkmnSearchButton;
+    private javax.swing.JTextField pkmnTextField;
     private javax.swing.JPanel resistantPanel;
+    private javax.swing.JCheckBoxMenuItem showImgMenuItem;
     private javax.swing.JButton type1Button;
     private javax.swing.JButton type2Button;
     private javax.swing.JPanel typeChartPanel;
