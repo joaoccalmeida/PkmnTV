@@ -5,7 +5,6 @@
  */
 package pkmntv.dbconn;
 
-import java.net.URL;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +26,12 @@ public class InfoGetter {
     public InfoGetter(){
         String url = getClass().getClassLoader().getResource("resources/database/PkmnType.h2.db").getPath();
         // url = file:/G:/Project/PkmnTV/dist/run1967337433/PkmnTV.jar!/resources/database/PkmnType.h2.db
-        String path = url.substring(5, url.length()-6); // to remove the "file:" and ".h2.db" substrings
+        
+        /* 
+            To remove the "file:" and ".h2.db" substrings. Because the url 
+                turns spaces into "%20" notation, is used the replace method.
+        */
+        String path = url.substring(5, url.length()-6).replaceAll("%20", " "); 
         cp = JdbcConnectionPool.create("jdbc:h2:zip:" + path, "sa", "");
     }
     
