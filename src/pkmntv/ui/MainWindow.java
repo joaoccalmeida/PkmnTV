@@ -23,7 +23,6 @@ public class MainWindow extends javax.swing.JFrame {
     
     private final InfoGetter ig;
     private boolean isFirstQuery = true;
-    private boolean showPkmnImage = true;
     /**
      * Creates new form MainWindow
      */

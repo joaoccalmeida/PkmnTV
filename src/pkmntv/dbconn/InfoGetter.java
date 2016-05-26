@@ -5,6 +5,7 @@
  */
 package pkmntv.dbconn;
 
+import java.net.URL;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,8 +21,14 @@ public class InfoGetter {
     
     private final JdbcConnectionPool cp;
     
+    /*
+        Get the embeded database inside the .jar file
+    */
     public InfoGetter(){
-        cp = JdbcConnectionPool.create("jdbc:h2:file:./src/resources/database/PkmnType", "sa", "");
+        String url = getClass().getClassLoader().getResource("resources/database/PkmnType.h2.db").getPath();
+        // url = file:/G:/Project/PkmnTV/dist/run1967337433/PkmnTV.jar!/resources/database/PkmnType.h2.db
+        String path = url.substring(5, url.length()-6); // to remove the "file:" and ".h2.db" substrings
+        cp = JdbcConnectionPool.create("jdbc:h2:zip:" + path, "sa", "");
     }
     
     public Pokemon getPkmnInfo(String name){
