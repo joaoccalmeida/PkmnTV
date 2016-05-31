@@ -120,6 +120,9 @@ public class MainWindow extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 pkmnTextFieldFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                pkmnTextFieldFocusLost(evt);
+            }
         });
         pkmnTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,12 +231,16 @@ public class MainWindow extends javax.swing.JFrame {
         showPkmnInfo(pkmnTextField.getText().toLowerCase());
     }//GEN-LAST:event_pkmnSearchButtonActionPerformed
 
+    private void pkmnTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pkmnTextFieldFocusLost
+        pkmnTextField.setText("Enter a Pokémon name");
+    }//GEN-LAST:event_pkmnTextFieldFocusLost
+
     private void showPkmnInfo(String name){
         // For the first query is not necessary to clear the type panels.
         if(isFirstQuery)
             isFirstQuery = false;
         else
-            clearTypeChart();
+            clearComponents();
         
         Pokemon pkmn = ig.getPkmnInfo(name);
         if(pkmn == null)
@@ -245,10 +252,8 @@ public class MainWindow extends javax.swing.JFrame {
             String sndType = pkmn.getSecondType();
 
             if(!ig.getPkmnTypeEffect(fstType, sndType))
-                JOptionPane.showMessageDialog(this, 
-                        "Could not get the Pokemon type effectivness.\n"
-                                + "Please try again.", 
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                showErrorWindow("Could not get the Pokemon type effectivness.\n"
+                                + "Please try again.");
             else{
                 if(showImgMenuItem.isSelected()){
                     displayPkmnImage(name);
@@ -270,12 +275,16 @@ public class MainWindow extends javax.swing.JFrame {
     private void displayPkmnImage(String name){
         URL url = getClass().getClassLoader().getResource("resources/sprites/" + name + ".gif");
         if(url == null)
-            JOptionPane.showMessageDialog(this, 
-                        "Could not get the Pokemon sprite.\n"
-                                + "Please try again.", 
-                        "Error", JOptionPane.ERROR_MESSAGE);
+            showErrorWindow("Could not get the Pokemon sprite.\nPlease try again.");
         else
             imgLabel.setIcon(new ImageIcon(url));
+    }
+    
+    private void showErrorWindow(String message){
+        clearComponents();
+        
+        JOptionPane.showMessageDialog(this, message, 
+                        "Error", JOptionPane.ERROR_MESSAGE);
     }
     
     private void alterTypeButtons(String type1, String type2){
@@ -285,13 +294,21 @@ public class MainWindow extends javax.swing.JFrame {
         type2Button.setBackground(TypeColorMatcher.TC_MAP.get(type2));
     }
     
-    private void clearTypeChart(){
+    private void clearComponents(){
         normalPanel.removeAll();
         weakPanel.removeAll();
         immunePanel.removeAll();
         resistantPanel.removeAll();
+        type1Button.setText(null);
+        type2Button.setText(null);
+        type1Button.setBackground(null);
+        type2Button.setBackground(null);
+        
+        imgLabel.setIcon(null);
         
         TypeEffect.resetTypeMap();
+        
+        this.repaint();
     }
     
     private void insertTypeChartButtons(JPanel panel, Map map){
