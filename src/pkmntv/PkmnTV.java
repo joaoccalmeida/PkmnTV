@@ -1,8 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+// Licensed under GPLv2 or any later version
+// Refer to the license.txt file included.
+
 package pkmntv;
 
 import javafx.application.Application;

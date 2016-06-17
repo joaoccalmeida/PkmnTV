@@ -1,8 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+// Licensed under GPLv2 or any later version
+// Refer to the license.txt file included.
+
 package pkmntv.ui;
 
 import java.net.URL;
@@ -43,6 +41,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         jPanel2 = new javax.swing.JPanel();
         idNameLabel = new javax.swing.JLabel();
         type1Button = new javax.swing.JButton();
@@ -60,12 +63,26 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         showImgMenuItem = new javax.swing.JCheckBoxMenuItem();
+        jMenu9 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
         jMenu2.setText("jMenu2");
 
+        jMenu5.setText("File");
+        jMenuBar2.add(jMenu5);
+
+        jMenu6.setText("Edit");
+        jMenuBar2.add(jMenu6);
+
+        jMenu7.setText("jMenu7");
+
+        jMenu8.setText("jMenu8");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/icon.png")).getImage());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -169,13 +186,33 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Edit");
+        jMenu4.setText("Options");
 
         showImgMenuItem.setSelected(true);
         showImgMenuItem.setText("Get Pokemon image");
         jMenu4.add(showImgMenuItem);
 
         jMenuBar1.add(jMenu4);
+
+        jMenu9.setText("Help");
+
+        jMenuItem2.setText("Searching special pkmn names");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem2);
+
+        jMenuItem3.setText("About PkmnTV");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu9);
 
         setJMenuBar(jMenuBar1);
 
@@ -234,6 +271,14 @@ public class MainWindow extends javax.swing.JFrame {
     private void pkmnTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pkmnTextFieldFocusLost
         pkmnTextField.setText("Enter a Pokémon name");
     }//GEN-LAST:event_pkmnTextFieldFocusLost
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        new AboutDialog(this, false).setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new InfoDialog(this, false).setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void showPkmnInfo(String name){
         // For the first query is not necessary to clear the type panels.
@@ -313,6 +358,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void insertTypeChartButtons(JPanel panel, Map map){
         map.forEach((k,v)-> {
+            //JButton jb = new JButton("<html><b>"+k+"</b>: "+v+"x</html>");
             JButton jb = new JButton(k+": "+v+"x");
             jb.setVisible(true);
             jb.setBackground(TypeColorMatcher.TC_MAP.get((String)k));
@@ -363,8 +409,16 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel normalPanel;
     private javax.swing.JButton pkmnSearchButton;
