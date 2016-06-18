@@ -3,6 +3,8 @@
 
 package pkmntv.logic;
 
+import java.util.List;
+
 /**
  *
  * @author João
@@ -27,6 +29,6 @@ public class Pokemon {
     }
     
     public String getName(){
-        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
+        return name.split("-")[0];
     }
 }

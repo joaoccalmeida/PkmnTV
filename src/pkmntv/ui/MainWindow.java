@@ -3,13 +3,17 @@
 
 package pkmntv.ui;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import pkmntv.dbconn.InfoGetter;
+import pkmntv.logic.PkmnForms;
 import pkmntv.logic.Pokemon;
 import pkmntv.logic.TypeEffect;
 
@@ -19,13 +23,16 @@ import pkmntv.logic.TypeEffect;
  */
 public class MainWindow extends javax.swing.JFrame {
     
+    private Pokemon pkmn;
     private final InfoGetter ig;
+    private List<String> pkmnForms;
     private boolean isFirstQuery = true;
+    private final ItemChangeListener comboBoxListener = new ItemChangeListener();
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
-        initComponents();
+        initComponents();        
         ig = new InfoGetter();
         jMenu3.requestFocus();
     }
@@ -51,6 +58,10 @@ public class MainWindow extends javax.swing.JFrame {
         type1Button = new javax.swing.JButton();
         type2Button = new javax.swing.JButton();
         imgLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        changeTextLabel = new javax.swing.JLabel();
+        formesComboBox = new javax.swing.JComboBox<>();
+        mainFormButton = new javax.swing.JButton();
         pkmnTextField = new javax.swing.JTextField();
         typeChartPanel = new javax.swing.JPanel();
         normalPanel = new javax.swing.JPanel();
@@ -99,6 +110,46 @@ public class MainWindow extends javax.swing.JFrame {
         imgLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imgLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        changeTextLabel.setText("<html>  This pokemon has diferent forms that change its type  </html>");
+        changeTextLabel.setEnabled(false);
+
+        formesComboBox.setEnabled(false);
+
+        mainFormButton.setText("Main Form");
+        mainFormButton.setEnabled(false);
+        mainFormButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mainFormButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(changeTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(mainFormButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(formesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(changeTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(formesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mainFormButton))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -106,17 +157,21 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(imgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(idNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(type1Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(imgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(idNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(type1Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,7 +184,9 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(imgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68))
         );
 
         pkmnTextField.setText("Enter Pokemon name");
@@ -226,7 +283,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
+                        .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pkmnTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -242,10 +299,10 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(pkmnTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pkmnSearchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeChartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(typeChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -280,6 +337,10 @@ public class MainWindow extends javax.swing.JFrame {
         new InfoDialog(this, false).setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void mainFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainFormButtonActionPerformed
+        showPkmnInfo(pkmn.getName());
+    }//GEN-LAST:event_mainFormButtonActionPerformed
+
     private void showPkmnInfo(String name){
         // For the first query is not necessary to clear the type panels.
         if(isFirstQuery)
@@ -287,7 +348,7 @@ public class MainWindow extends javax.swing.JFrame {
         else
             clearComponents();
         
-        Pokemon pkmn = ig.getPkmnInfo(name);
+        pkmn = ig.getPkmnInfo(name);
         if(pkmn == null)
             JOptionPane.showMessageDialog(this, 
                     "The Pokemon doesn´t exist.\nPlease try again.", 
@@ -303,13 +364,37 @@ public class MainWindow extends javax.swing.JFrame {
                 if(showImgMenuItem.isSelected()){
                     displayPkmnImage(name);
                 }
-                idNameLabel.setText(pkmn.getName());
+                idNameLabel.setText(Character.toUpperCase(name.charAt(0)) + name.substring(1));
                 alterTypeButtons(pkmn.getFirstType(), pkmn.getSecondType());
             
                 insertTypeChartButtons(normalPanel, TypeEffect.getNormalEffectMap());
                 insertTypeChartButtons(weakPanel, TypeEffect.getWeakEffectMap());
                 insertTypeChartButtons(immunePanel, TypeEffect.getImmuneEffectMap());
                 insertTypeChartButtons(resistantPanel, TypeEffect.getResistantEffectMap());
+                
+                if(PkmnForms.hasSpecialFormes(pkmn.getName())){
+                    formesComboBox.removeAllItems();
+                    formesComboBox.removeItemListener(comboBoxListener);
+                    
+                    formesComboBox.setEnabled(true);
+                    changeTextLabel.setEnabled(true);
+                    mainFormButton.setEnabled(true);
+                    
+                    pkmnForms = PkmnForms.getForms(pkmn.getName());
+                    formesComboBox.addItem("");
+                    pkmnForms.stream().forEach((entry) -> {
+                        formesComboBox.addItem(entry);
+                    });
+                    
+                    formesComboBox.addItemListener(comboBoxListener);
+                    
+                    jPanel1.repaint();
+                }
+                else{
+                    formesComboBox.setEnabled(false);
+                    changeTextLabel.setEnabled(false);
+                    mainFormButton.setEnabled(false);
+                }
                 
                 typeChartPanel.repaint();
                 this.pack();
@@ -319,10 +404,10 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void displayPkmnImage(String name){
         URL url = getClass().getClassLoader().getResource("resources/sprites/" + name + ".gif");
-        if(url == null)
-            showErrorWindow("Could not get the Pokemon sprite.\nPlease try again.");
-        else
+        if(url != null)
             imgLabel.setIcon(new ImageIcon(url));
+        else 
+            imgLabel.setText("Not available!");
     }
     
     private void showErrorWindow(String message){
@@ -366,6 +451,16 @@ public class MainWindow extends javax.swing.JFrame {
                 });
     }
     
+    private final class ItemChangeListener implements ItemListener{
+        @Override
+        public void itemStateChanged(ItemEvent event) {
+           if (event.getStateChange() == ItemEvent.SELECTED) {
+              String form = event.getItem().toString();
+              showPkmnInfo(pkmn.getName() + "-" + form);
+           }
+        }       
+    }
+    
     
     
     /**
@@ -402,6 +497,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel changeTextLabel;
+    private javax.swing.JComboBox<String> formesComboBox;
     private javax.swing.JLabel idNameLabel;
     private javax.swing.JLabel imgLabel;
     private javax.swing.JPanel immunePanel;
@@ -419,7 +516,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton mainFormButton;
     private javax.swing.JPanel normalPanel;
     private javax.swing.JButton pkmnSearchButton;
     private javax.swing.JTextField pkmnTextField;
