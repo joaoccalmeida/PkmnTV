@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import pkmntv.dbconn.InfoGetter;
-import pkmntv.logic.PkmnForms;
 import pkmntv.logic.Pokemon;
 import pkmntv.logic.TypeEffect;
 
@@ -58,7 +57,7 @@ public class MainWindow extends javax.swing.JFrame {
         type1Button = new javax.swing.JButton();
         type2Button = new javax.swing.JButton();
         imgLabel = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        alternateFormsPanel = new javax.swing.JPanel();
         changeTextLabel = new javax.swing.JLabel();
         formesComboBox = new javax.swing.JComboBox<>();
         mainFormButton = new javax.swing.JButton();
@@ -123,28 +122,28 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout alternateFormsPanelLayout = new javax.swing.GroupLayout(alternateFormsPanel);
+        alternateFormsPanel.setLayout(alternateFormsPanelLayout);
+        alternateFormsPanelLayout.setHorizontalGroup(
+            alternateFormsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(alternateFormsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(changeTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, alternateFormsPanelLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(mainFormButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(formesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        alternateFormsPanelLayout.setVerticalGroup(
+            alternateFormsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(alternateFormsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(changeTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(alternateFormsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(formesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(mainFormButton))
                 .addContainerGap(18, Short.MAX_VALUE))
@@ -170,7 +169,7 @@ public class MainWindow extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(type2Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(alternateFormsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -185,7 +184,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(imgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(alternateFormsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68))
         );
 
@@ -367,29 +366,13 @@ public class MainWindow extends javax.swing.JFrame {
                 idNameLabel.setText(Character.toUpperCase(name.charAt(0)) + name.substring(1));
                 alterTypeButtons(pkmn.getFirstType(), pkmn.getSecondType());
             
-                insertTypeChartButtons(normalPanel, TypeEffect.getNormalEffectMap());
-                insertTypeChartButtons(weakPanel, TypeEffect.getWeakEffectMap());
-                insertTypeChartButtons(immunePanel, TypeEffect.getImmuneEffectMap());
+                insertTypeChartButtons(normalPanel,    TypeEffect.getNormalEffectMap());
+                insertTypeChartButtons(weakPanel,      TypeEffect.getWeakEffectMap());
+                insertTypeChartButtons(immunePanel,    TypeEffect.getImmuneEffectMap());
                 insertTypeChartButtons(resistantPanel, TypeEffect.getResistantEffectMap());
                 
-                if(PkmnForms.hasSpecialFormes(pkmn.getName())){
-                    formesComboBox.removeAllItems();
-                    formesComboBox.removeItemListener(comboBoxListener);
-                    
-                    formesComboBox.setEnabled(true);
-                    changeTextLabel.setEnabled(true);
-                    mainFormButton.setEnabled(true);
-                    
-                    pkmnForms = PkmnForms.getForms(pkmn.getName());
-                    formesComboBox.addItem("");
-                    pkmnForms.stream().forEach((entry) -> {
-                        formesComboBox.addItem(entry);
-                    });
-                    
-                    formesComboBox.addItemListener(comboBoxListener);
-                    
-                    jPanel1.repaint();
-                }
+                if(pkmn.hasSpecialFormes())
+                    enableAlternateFormsPanel();
                 else{
                     formesComboBox.setEnabled(false);
                     changeTextLabel.setEnabled(false);
@@ -408,6 +391,23 @@ public class MainWindow extends javax.swing.JFrame {
             imgLabel.setIcon(new ImageIcon(url));
         else 
             imgLabel.setText("Not available!");
+    }
+    
+    private void enableAlternateFormsPanel(){
+        formesComboBox.removeAllItems();
+        formesComboBox.removeItemListener(comboBoxListener);
+
+        formesComboBox.setEnabled(true);
+        changeTextLabel.setEnabled(true);
+        mainFormButton.setEnabled(true);
+
+        formesComboBox.addItem("");
+        pkmn.getForms().stream().forEach((entry) -> {
+            formesComboBox.addItem(entry);
+        });
+
+        formesComboBox.addItemListener(comboBoxListener);
+        alternateFormsPanel.repaint();
     }
     
     private void showErrorWindow(String message){
@@ -479,15 +479,15 @@ public class MainWindow extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException 
+                | InstantiationException 
+                | IllegalAccessException 
+                | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWindow.class.getName())
+                    .log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
@@ -497,6 +497,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel alternateFormsPanel;
     private javax.swing.JLabel changeTextLabel;
     private javax.swing.JComboBox<String> formesComboBox;
     private javax.swing.JLabel idNameLabel;
@@ -516,7 +517,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton mainFormButton;
     private javax.swing.JPanel normalPanel;
