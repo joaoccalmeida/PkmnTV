@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <style>.cls-1{isolation:isolate;}.cls-2{fill:#41b9e6;}.cls-3,.cls-4{opacity:0.5;mix-blend-mode:overlay;}.cls-3{fill:url(#linear-gradient);}.cls-4{fill:url(#linear-gradient-2);}</style>
+        <linearGradient id="linear-gradient" x1="-12759.6" y1="-13448.45" x2="-12535.03" y2="-14722.08" gradientTransform="translate(-12163 -13533) rotate(180)" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff" stop-opacity="0.4"/>
+            <stop offset="0.51" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1="-1164.24" y1="1477.49" x2="136.02" y2="177.24" gradientTransform="matrix(1.03, 0.03, 0.03, 1.03, 1702.72, -258.5)" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff" stop-opacity="0.4"/>
+            <stop offset="0.62" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+    <title>background-config</title>
+    <g class="cls-1">
+        <g id="Layer_1" data-name="Layer 1">
+            <rect class="cls-2" width="1920" height="1080"/>
+            <polygon class="cls-3" points="0 483 428 0 1079 0 84 1123 0 1123 0 483"/>
+            <polygon class="cls-4" points="1102 1084 403 1084 1363 0 1920 0 1920 156 1102 1084"/>
+        </g>
+    </g>
+</svg>
